@@ -1,0 +1,72 @@
+erdiagram Group18Model
+notation=default
+
+entity Customer {
+    customer_id: INTEGER key
+    name: VARCHAR(100)
+    email: VARCHAR(100)
+    address: VARCHAR(200)
+    phone: VARCHAR(15)
+}
+
+entity Product {
+    product_id: INTEGER key
+    name: VARCHAR(100)
+    type: VARCHAR(50)
+    scale: VARCHAR(10)
+    price: DECIMAL(10,2)
+    inventory_quantity: INTEGER
+    minimum_quantity: INTEGER
+}
+
+entity Manufacturer {
+    manufacturer_id: INTEGER key
+    name: VARCHAR(100)
+    website: VARCHAR(200)
+}
+
+entity Invoice {
+    invoice_id: INTEGER key
+    date: DATE
+    shipping_charge: DECIMAL(10,2)
+    total_amount: DECIMAL(10,2)
+}
+
+entity BackOrder {
+    backorder_id: INTEGER key
+    product_id: INTEGER
+    customer_id: INTEGER
+    date: DATE
+    quantity: INTEGER
+}
+
+entity PromotionalMaterial {
+    promo_id: INTEGER key
+    type: VARCHAR(50)
+    date: DATE
+    target_audience: VARCHAR(100)
+}
+
+relationship CustomerInvoice {
+    Customer[1 | "customer"] -> Invoice[0..N | "invoices"]
+}
+
+relationship InvoiceProduct {
+    Invoice[1 | "invoice"] -> Product[0..N | "products"]
+}
+
+relationship ProductManufacturer {
+    Product[1 | "product"] -> Manufacturer[1 | "manufacturer"]
+}
+
+relationship ProductBackOrder {
+    Product[1 | "product"] -> BackOrder[0..N | "backorders"]
+}
+
+relationship CustomerBackOrder {
+    Customer[1 | "customer"] -> BackOrder[0..N | "backorders"]
+}
+
+relationship CustomerPromotionalMaterial {
+    Customer[0..N | "customers"] -> PromotionalMaterial[0..N | "promotions"]
+}
